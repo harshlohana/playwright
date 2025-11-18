@@ -1,36 +1,155 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Playwright Test Generator
 
-## Getting Started
+A comprehensive Next.js 14 application for generating Playwright test cases using AI and a visual drag-and-drop builder.
 
-First, run the development server:
+## Features
+
+- **🎨 Visual Builder**: Create test flows using a drag-and-drop React Flow interface
+- **🤖 AI Generation**: Generate Playwright tests from natural language descriptions
+- **📝 Code Export**: Export generated tests as `.spec.ts` files
+- **▶️ Test Execution**: Run tests directly from the platform
+- **💾 Pipeline Management**: Save and manage your test pipelines
+
+## Tech Stack
+
+- Next.js 14 (App Router)
+- TypeScript
+- TailwindCSS
+- shadcn/ui components
+- React Flow for visual builder
+- OpenAI API for AI generation
+- Playwright for test execution
+
+## Prerequisites
+
+- Node.js 18+ (recommended Node.js 20+)
+- npm or yarn
+- OpenAI API key (optional, for AI generation feature)
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone <your-repo-url>
+cd playwright-generator
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Set up environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` and add your OpenAI API key:
+
+```
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+4. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Dashboard
 
-## Learn More
+The home page provides quick access to all features and a getting started guide.
 
-To learn more about Next.js, take a look at the following resources:
+### Visual Builder (`/builder`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Click "Add Nodes" to add test steps:
+   - **Navigate**: Go to a URL
+   - **Click**: Click an element
+   - **Type**: Enter text into an input
+   - **Expect**: Add assertions
+2. Connect nodes by dragging from the bottom handle of one node to the top handle of another
+3. Configure each node by clicking on it
+4. Click "Generate Code" to convert your flow to Playwright code
+5. Save your pipeline for later use
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### AI Generator (`/ai`)
 
-## Deploy on Vercel
+1. Enter your application's base URL
+2. Describe your test scenario in natural language
+3. Click "Generate Test" to create Playwright code
+4. Copy, download, or run the generated test
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Test Files (`/tests`)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+View and manage all your saved test pipelines.
+
+## API Routes
+
+- `POST /api/generate` - Generate Playwright code from natural language
+- `POST /api/savePipeline` - Save a test pipeline
+- `GET /api/savePipeline` - Get all saved pipelines
+- `POST /api/runTest` - Execute a Playwright test
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── api/           # API routes
+│   ├── ai/            # AI generator page
+│   ├── builder/       # Visual builder page
+│   ├── tests/         # Test files page
+│   └── page.tsx       # Dashboard
+├── components/
+│   ├── ui/            # shadcn/ui components
+│   ├── nodes/         # React Flow custom nodes
+│   ├── app-sidebar.tsx
+│   ├── builder-canvas.tsx
+│   ├── code-preview-modal.tsx
+│   └── pipeline-sidebar.tsx
+└── lib/
+    ├── pipelineToPlaywright.ts  # Flow to code converter
+    └── utils.ts                  # Utility functions
+```
+
+## Features in Detail
+
+### Node Types
+
+**Navigate Node**
+
+- Navigates to a specified URL
+- Supports both absolute and relative URLs
+
+**Click Node**
+
+- Clicks on an element using a CSS selector
+- Waits for element to be clickable
+
+**Type Node**
+
+- Fills text into an input field
+- Uses CSS selector to target element
+
+**Expect Node**
+
+- Adds assertions to verify test conditions
+- Supports multiple assertion types:
+  - `toBeVisible` - Element is visible
+  - `toHaveText` - Element contains specific text
+  - `toHaveValue` - Input has specific value
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+MIT
